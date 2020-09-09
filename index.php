@@ -5,10 +5,12 @@ declare(strict_types=1);
 //we are going to use session variables so we need to enable sessions
 session_start();
 
-
 // define variables and set to empty values
 $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetnumber = $city = $zipcode = "";
+$formIsValid = false;
+
+
 
 if (!empty($_POST)) {
   //email
@@ -16,10 +18,10 @@ if (!empty($_POST)) {
     $emailErr = "Email is required";
   } else {
     $email = $_POST["email"];
-    // check if e-mail address is well-formed
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $emailErr = "Invalid email format";
-    }
+  };
+  // check if e-mail address is well-formed
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $emailErr = "Invalid email format";
   }
 
   //street
@@ -54,10 +56,41 @@ if (!empty($_POST)) {
     $zipcode = $_POST["zipcode"];
     // check if the zipcode only consists out of numbers
     if (!preg_match("/^[0-9]*$/", $zipcode)) {
-      $streetnumberErr = "Only numbers are allowed";
+      $zipcodeErr = "Only numbers are allowed";
     }
   }
 };
+
+if (isset($_SESSION["email"])) {
+  $email = $_SESSION["email"];
+};
+if (isset($_SESSION["street"])) {
+  $street = $_SESSION["street"];
+};
+if (isset($_SESSION["streetnumber"])) {
+  $streetnumber = $_SESSION["streetnumber"];
+};
+if (isset($_SESSION["city"])) {
+  $city = $_SESSION["city"];
+};
+if (isset($_SESSION["zipcode"])) {
+  $zipcode = $_SESSION["zipcode"];
+};
+
+whatIsHappening();
+
+
+// Message for user if form is valid
+if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["streetnumber"]) && !empty($_POST["city"]) && !empty($_POST["zipcode"])) {
+  $_SESSION["email"] = $_POST["email"];
+  $_SESSION["street"] = $_POST["street"];
+  $_SESSION["streetnumber"] = $_POST["streetnumber"];
+  $_SESSION["city"] = $_POST["city"];
+  $_SESSION["zipcode"] = $_POST["zipcode"];
+
+  echo 'Your order is submitted, thank you';
+};
+
 
 
 
@@ -73,7 +106,7 @@ function whatIsHappening()
   var_dump($_SESSION);
 }
 
-whatIsHappening();
+
 
 //your products with their price.
 $products = [
