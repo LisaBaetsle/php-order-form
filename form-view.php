@@ -71,6 +71,12 @@
         <span class="error">* <?php echo $productsErr; ?> </span>
       </fieldset>
 
+      <fieldset>
+        <legend>Delivery</legend>
+        <input type="checkbox" id="expressDelivery" name="expressDelivery" value="expressDelivery">
+        <label for="expressDelivery"> Do you want an express delivery?</label><br>
+      </fieldset>
+
       <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 

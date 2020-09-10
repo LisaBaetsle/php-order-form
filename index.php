@@ -151,11 +151,15 @@ echo $totalValue;
 // Delivery time
 function estimateDeliveryTime()
 {
-  $hour = date("h");
-  $minutes = date("i");
-  $hourDelivery = $hour + 2;
+  $timeNow = date("h:i");
 
-  echo "your order will be delivered at " . $hourDelivery . ":" . $minutes;
+  if (!empty($_POST["expressDelivery"])) {
+    $hourExpressDel = date('h:i', strtotime('+45 minutes', strtotime($timeNow)));
+    echo "your order will be delivered at " . $hourExpressDel;
+  } else {
+    $hourNormalDel = date('h:i', strtotime('+2 hours', strtotime($timeNow)));
+    echo "your order will be delivered at " . $hourNormalDel;
+  };
 }
 
 
