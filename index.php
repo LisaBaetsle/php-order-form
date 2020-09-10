@@ -146,7 +146,7 @@ function totalAmountPerOrder()
 }
 
 
-echo 'this is the ' . $total;
+echo 'this is the total of the order ' . $total;
 
 // Delivery time
 function estimateDeliveryTime()
@@ -162,11 +162,20 @@ function estimateDeliveryTime()
   };
 }
 
-/* //Total value with cookies
-$cookie_name = "totalvalue";
-$cookie_value = "$totalValue";
-setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day => cookie is kept for 30 days
-// echo $_COOKIE[$cookie_name]; */
+//Total value with cookies
+$totalAmount = 0;
+// if cookie is set for the variable, it'll go to $countVisit and get added by 1; otherwise it'll show 0 for tha variable
+if (isset($_COOKIE['testCookie'])) {
+  $totalAmount = $_COOKIE['testCookie'] + $total;
+};
+
+echo "this is the total overall:" . $totalAmount;
+
+
+$cookie = "$totalAmount";
+setcookie("testCookie", $cookie, time() + (86400 * 30), "/"); // 86400 = 1 day
+
+echo "this is the cookie total amount overall:" . $_COOKIE["testCookie"];
 
 whatIsHappening();
 

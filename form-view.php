@@ -80,7 +80,8 @@
       <button type="submit" class="btn btn-primary">Order!</button>
     </form>
 
-    <footer>You already ordered <strong>&euro; <?php echo $total ?></strong> in food and drinks.</footer>
+    <p>This order is <strong>&euro; <?php echo $total ?></strong></p>
+    <footer>You already ordered <strong>&euro; <?php echo $totalAmount ?></strong> in food and drinks.</footer>
   </div>
 
   <style>
