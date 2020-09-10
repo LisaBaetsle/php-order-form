@@ -9,7 +9,7 @@ session_start();
 $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = $productsErr = "";
 $email = $street = $streetnumber = $city = $zipcode = $products = "";
 
-
+// Validate and check requirements form
 if (!empty($_POST)) {
   //email
   if (empty($_POST["email"])) {
@@ -17,6 +17,7 @@ if (!empty($_POST)) {
   } else {
     $email = $_POST["email"];
   };
+
   // check if e-mail address is well-formed
   if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $emailErr = "Invalid email format";
@@ -66,6 +67,8 @@ if (!empty($_POST)) {
   }
 };
 
+
+// Check if session excist and store them in the values to autofill the form.
 if (isset($_SESSION["email"])) {
   $email = $_SESSION["email"];
 };
@@ -84,35 +87,32 @@ if (isset($_SESSION["zipcode"])) {
 
 
 
-// Message for user if form is valid
+// The form is valid
+$submit = "";
+$deliveryTime = "";
+$totalMessage = "";
 $total = 0;
+
 if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["streetnumber"]) && !empty($_POST["city"]) && !empty($_POST["zipcode"]) && !empty($_POST["products"])) {
+  createSessionValues();
+
+  $submit = 'Thank you! Your order is submitted. </br>';
+
+  $deliveryTime = estimateDeliveryTime();
+  $total = totalAmountPerOrder();
+  $totalMessage = 'The total amount of this order is €' . totalAmountPerOrder() . "</br>";
+};
+
+// Create the session values
+function createSessionValues()
+{
   $_SESSION["email"] = $_POST["email"];
   $_SESSION["street"] = $_POST["street"];
   $_SESSION["streetnumber"] = $_POST["streetnumber"];
   $_SESSION["city"] = $_POST["city"];
   $_SESSION["zipcode"] = $_POST["zipcode"];
-
-  echo 'Your order is submitted, thank you';
-
-  estimateDeliveryTime();
-  $total = totalAmountPerOrder();
 };
 
-
-
-
-function whatIsHappening()
-{
-  echo '<h2>$_GET</h2>';
-  var_dump($_GET);
-  echo '<h2>$_POST</h2>';
-  var_dump($_POST);
-  echo '<h2>$_COOKIE</h2>';
-  var_dump($_COOKIE);
-  echo '<h2>$_SESSION</h2>';
-  var_dump($_SESSION);
-}
 
 
 //your products with their price.
@@ -145,38 +145,42 @@ function totalAmountPerOrder()
   return $totalValue;
 }
 
-
-echo 'this is the total of the order ' . $total;
-
 // Delivery time
 function estimateDeliveryTime()
 {
-  $timeNow = date("h:i");
+  $timeNow = date("H:i");
 
   if (!empty($_POST["expressDelivery"])) {
-    $hourExpressDel = date('h:i', strtotime('+45 minutes', strtotime($timeNow)));
-    echo "your order will be delivered at " . $hourExpressDel;
+    $hourExpressDel = date('H:i', strtotime('+45 minutes', strtotime($timeNow)));
+    return "Your order will be delivered at " . $hourExpressDel . "</br>";
   } else {
-    $hourNormalDel = date('h:i', strtotime('+2 hours', strtotime($timeNow)));
-    echo "your order will be delivered at " . $hourNormalDel;
+    $hourNormalDel = date('H:i', strtotime('+2 hours', strtotime($timeNow)));
+    return "Your order will be delivered at " . $hourNormalDel . "</br>";
   };
 }
 
 //Total value with cookies
 $totalAmount = 0;
-// if cookie is set for the variable, it'll go to $countVisit and get added by 1; otherwise it'll show 0 for tha variable
-if (isset($_COOKIE['testCookie'])) {
-  $totalAmount = $_COOKIE['testCookie'] + $total;
+
+if (isset($_COOKIE['amountOverall'])) {
+  $totalAmount = $_COOKIE['amountOverall'] + $total;
 };
 
-echo "this is the total overall:" . $totalAmount;
-
-
 $cookie = "$totalAmount";
-setcookie("testCookie", $cookie, time() + (86400 * 30), "/"); // 86400 = 1 day
+setcookie("amountOverall", $cookie, time() + (86400 * 30), "/"); // 86400 = 1 day
 
-echo "this is the cookie total amount overall:" . $_COOKIE["testCookie"];
+function whatIsHappening()
+{
+  echo '<h2>$_GET</h2>';
+  var_dump($_GET);
+  echo '<h2>$_POST</h2>';
+  var_dump($_POST);
+  echo '<h2>$_COOKIE</h2>';
+  var_dump($_COOKIE);
+  echo '<h2>$_SESSION</h2>';
+  var_dump($_SESSION);
+}
 
-whatIsHappening();
+// whatIsHappening();
 
 require 'form-view.php';

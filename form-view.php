@@ -10,7 +10,15 @@
 </head>
 
 <body>
+
+
   <div class="container">
+    <div class="alert alert-success" role="alert">
+      <?php echo $submit;
+      echo $deliveryTime;
+      echo $totalMessage;
+      ?>
+    </div>
     <h1>Order food in restaurant "the Personal Ham Processors"</h1>
     <nav>
       <ul class="nav">
