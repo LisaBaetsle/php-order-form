@@ -85,6 +85,7 @@ if (isset($_SESSION["zipcode"])) {
 
 
 // Message for user if form is valid
+$total = 0;
 if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["streetnumber"]) && !empty($_POST["city"]) && !empty($_POST["zipcode"]) && !empty($_POST["products"])) {
   $_SESSION["email"] = $_POST["email"];
   $_SESSION["street"] = $_POST["street"];
@@ -95,10 +96,11 @@ if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["street
   echo 'Your order is submitted, thank you';
 
   estimateDeliveryTime();
+  $total = totalAmountPerOrder();
 };
 
 
-whatIsHappening();
+
 
 function whatIsHappening()
 {
@@ -114,39 +116,37 @@ function whatIsHappening()
 
 
 //your products with their price.
-$products = [
-  ['name' => 'Club Ham', 'price' => 3.20],
-  ['name' => 'Club Cheese', 'price' => 3],
-  ['name' => 'Club Cheese & Ham', 'price' => 4],
-  ['name' => 'Club Chicken', 'price' => 4],
-  ['name' => 'Club Salmon', 'price' => 5]
-];
-
-if ($_GET['drinks'] == 1) {
+if (isset($_GET["drinks"]) && $_GET['drinks'] == 1) {
   $products = [
     ['name' => 'Cola', 'price' => 2],
     ['name' => 'Fanta', 'price' => 2],
     ['name' => 'Sprite', 'price' => 2],
     ['name' => 'Ice-tea', 'price' => 3],
   ];
+} else {
+  $products = [
+    ['name' => 'Club Ham', 'price' => 3.20],
+    ['name' => 'Club Cheese', 'price' => 3],
+    ['name' => 'Club Cheese & Ham', 'price' => 4],
+    ['name' => 'Club Chicken', 'price' => 4],
+    ['name' => 'Club Salmon', 'price' => 5]
+  ];
 };
 
+// Calculate the total amount per order
+function totalAmountPerOrder()
+{
+  $totalValue = 0;
+  foreach ($_POST["products"] as $value) {
+    // echo "$value <br>";
+    $totalValue += $value;
+  }
 
-
-
-var_dump($products);
-var_dump($_POST["products"]);
-print_r($_POST["products"]);
-
-$totalValue = 0;
-foreach ($_POST["products"] as $value) {
-  echo "$value <br>";
-  $totalValue += $value;
+  return $totalValue;
 }
 
-echo $totalValue;
 
-
+echo 'this is the ' . $total;
 
 // Delivery time
 function estimateDeliveryTime()
@@ -162,6 +162,12 @@ function estimateDeliveryTime()
   };
 }
 
+/* //Total value with cookies
+$cookie_name = "totalvalue";
+$cookie_value = "$totalValue";
+setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 day => cookie is kept for 30 days
+// echo $_COOKIE[$cookie_name]; */
 
+whatIsHappening();
 
 require 'form-view.php';
