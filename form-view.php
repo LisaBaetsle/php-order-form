@@ -68,6 +68,7 @@
             <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $i ?>]" /> <?php echo $product['name'] ?> -
             &euro; <?php echo number_format($product['price'], 2) ?></label><br />
         <?php endforeach; ?>
+        <span class="error">* <?php echo $productsErr; ?> </span>
       </fieldset>
 
       <button type="submit" class="btn btn-primary">Order!</button>

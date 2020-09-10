@@ -6,8 +6,8 @@ declare(strict_types=1);
 session_start();
 
 // define variables and set to empty values
-$emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = "";
-$email = $street = $streetnumber = $city = $zipcode = "";
+$emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = $productsErr = "";
+$email = $street = $streetnumber = $city = $zipcode = $products = "";
 
 
 if (!empty($_POST)) {
@@ -57,6 +57,13 @@ if (!empty($_POST)) {
       $zipcodeErr = "Only numbers are allowed";
     }
   }
+
+  //products
+  if (empty($_POST["products"])) {
+    $productsErr = "Pick at least one product";
+  } else {
+    $products = $_POST["products"];
+  }
 };
 
 if (isset($_SESSION["email"])) {
@@ -78,7 +85,7 @@ if (isset($_SESSION["zipcode"])) {
 
 
 // Message for user if form is valid
-if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["streetnumber"]) && !empty($_POST["city"]) && !empty($_POST["zipcode"])) {
+if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["streetnumber"]) && !empty($_POST["city"]) && !empty($_POST["zipcode"]) && !empty($_POST["products"])) {
   $_SESSION["email"] = $_POST["email"];
   $_SESSION["street"] = $_POST["street"];
   $_SESSION["streetnumber"] = $_POST["streetnumber"];
@@ -86,6 +93,8 @@ if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["street
   $_SESSION["zipcode"] = $_POST["zipcode"];
 
   echo 'Your order is submitted, thank you';
+
+  estimateDeliveryTime();
 };
 
 
@@ -137,6 +146,17 @@ foreach ($_POST["products"] as $value) {
 
 echo $totalValue;
 
+
+
+// Delivery time
+function estimateDeliveryTime()
+{
+  $hour = date("h");
+  $minutes = date("i");
+  $hourDelivery = $hour + 2;
+
+  echo "your order will be delivered at " . $hourDelivery . ":" . $minutes;
+}
 
 
 
