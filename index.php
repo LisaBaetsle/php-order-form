@@ -8,8 +8,6 @@ session_start();
 // define variables and set to empty values
 $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetnumber = $city = $zipcode = "";
-$formIsValid = false;
-
 
 
 if (!empty($_POST)) {
@@ -77,7 +75,6 @@ if (isset($_SESSION["zipcode"])) {
   $zipcode = $_SESSION["zipcode"];
 };
 
-whatIsHappening();
 
 
 // Message for user if form is valid
@@ -92,7 +89,7 @@ if (!empty($_POST["email"]) && !empty($_POST["street"]) && !empty($_POST["street
 };
 
 
-
+whatIsHappening();
 
 function whatIsHappening()
 {
@@ -109,20 +106,27 @@ function whatIsHappening()
 
 
 //your products with their price.
-$products = [
-  ['name' => 'Club Ham', 'price' => 3.20],
-  ['name' => 'Club Cheese', 'price' => 3],
-  ['name' => 'Club Cheese & Ham', 'price' => 4],
-  ['name' => 'Club Chicken', 'price' => 4],
-  ['name' => 'Club Salmon', 'price' => 5]
-];
 
-$products = [
-  ['name' => 'Cola', 'price' => 2],
-  ['name' => 'Fanta', 'price' => 2],
-  ['name' => 'Sprite', 'price' => 2],
-  ['name' => 'Ice-tea', 'price' => 3],
-];
+if ($_GET['food'] == 1) {
+  $products = [
+    ['name' => 'Club Ham', 'price' => 3.20],
+    ['name' => 'Club Cheese', 'price' => 3],
+    ['name' => 'Club Cheese & Ham', 'price' => 4],
+    ['name' => 'Club Chicken', 'price' => 4],
+    ['name' => 'Club Salmon', 'price' => 5]
+  ];
+} else {
+  $products = [
+    ['name' => 'Cola', 'price' => 2],
+    ['name' => 'Fanta', 'price' => 2],
+    ['name' => 'Sprite', 'price' => 2],
+    ['name' => 'Ice-tea', 'price' => 3],
+  ];
+};
+
+var_dump($products);
+var_dump($_POST["products"]);
+echo $_POST["products"][0];
 
 $totalValue = 0;
 
