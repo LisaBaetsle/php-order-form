@@ -15,10 +15,10 @@
     <nav>
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" href="?food=1">Order food</a>
+          <a class="nav-link active" href="?drinks=0">Order food</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="?food=0">Order drinks</a>
+          <a class="nav-link" href="?drinks=1">Order drinks</a>
         </li>
       </ul>
     </nav>
@@ -65,7 +65,7 @@
         <legend>Products</legend>
         <?php foreach ($products as $i => $product) : ?>
           <label>
-            <input type="checkbox" value="0" name="products[<?php echo $i ?>]" /> <?php echo $product['name'] ?> -
+            <input type="checkbox" value="<?php echo number_format($product['price'], 2) ?>" name="products[<?php echo $i ?>]" /> <?php echo $product['name'] ?> -
             &euro; <?php echo number_format($product['price'], 2) ?></label><br />
         <?php endforeach; ?>
       </fieldset>

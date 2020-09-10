@@ -104,18 +104,16 @@ function whatIsHappening()
 }
 
 
-
 //your products with their price.
+$products = [
+  ['name' => 'Club Ham', 'price' => 3.20],
+  ['name' => 'Club Cheese', 'price' => 3],
+  ['name' => 'Club Cheese & Ham', 'price' => 4],
+  ['name' => 'Club Chicken', 'price' => 4],
+  ['name' => 'Club Salmon', 'price' => 5]
+];
 
-if ($_GET['food'] == 1) {
-  $products = [
-    ['name' => 'Club Ham', 'price' => 3.20],
-    ['name' => 'Club Cheese', 'price' => 3],
-    ['name' => 'Club Cheese & Ham', 'price' => 4],
-    ['name' => 'Club Chicken', 'price' => 4],
-    ['name' => 'Club Salmon', 'price' => 5]
-  ];
-} else {
+if ($_GET['drinks'] == 1) {
   $products = [
     ['name' => 'Cola', 'price' => 2],
     ['name' => 'Fanta', 'price' => 2],
@@ -124,10 +122,22 @@ if ($_GET['food'] == 1) {
   ];
 };
 
+
+
+
 var_dump($products);
 var_dump($_POST["products"]);
-echo $_POST["products"][0];
+print_r($_POST["products"]);
 
 $totalValue = 0;
+foreach ($_POST["products"] as $value) {
+  echo "$value <br>";
+  $totalValue += $value;
+}
+
+echo $totalValue;
+
+
+
 
 require 'form-view.php';
