@@ -1,88 +1,53 @@
  <?php
-  /* // Import PHPMailer classes into the global namespace
-// These must be at the top of your script, not inside a function
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-// Load Composer's autoloader
-require 'vendor/autoload.php';
-
-
-// Instantiation and passing `true` enables exceptions
-$mail = new PHPMailer(true);
-
-try {
-  //Server settings
-  //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
-  $mail->isSMTP();                                            // Send using SMTP
-  $mail->Host       = 'smtp.live.com';                    // Set the SMTP server to send through
-  $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-  $mail->Username   = 'lisa_baetsle@hotmail.com';                     // SMTP username
-  $mail->Password   = 'paswoord';                               // SMTP password
-  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-  $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-
-  //Recipients
-  $mail->setFrom('lisa_baetsle@hotmail.com', 'Lisa Baetsle');
-  $mail->addAddress('lisa_baetsle@hotmail.com');     // Add a recipient
-  $mail->addReplyTo('lisa_baetsle@hotmail.com', 'Lisa Baetsle');
-  //$mail->addCC('cc@example.com');
-  //$mail->addBCC('bcc@example.com');
-
-  // Attachments
-  //$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
-  //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
-
-  // Content
-  $mail->isHTML(true);                                  // Set email format to HTML
-  $mail->Subject = "Your order with 'the Personal Ham Processors'";
-  $mail->Body    = $submit . "</br>" . $deliveryTime . "</br>" . $totalMessage . "</br>";
-  $mail->AltBody = $submit . "</br>" . $deliveryTime . "</br>" . $totalMessage . "</br>";
-
-  $mail->send();
-  echo 'Message has been sent';
-} catch (Exception $e) {
-  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-} */
-
-
-  /* Namespace alias. */
-
+  // Import PHPMailer classes into the global namespace
+  // These must be at the top of your script, not inside a function
   use PHPMailer\PHPMailer\PHPMailer;
+  use PHPMailer\PHPMailer\SMTP;
   use PHPMailer\PHPMailer\Exception;
 
-  /* Include the Composer generated autoload.php file. */
-
+  // Load Composer's autoloader
   require 'vendor/autoload.php';
 
-  /* If you installed PHPMailer without Composer do this instead: */
-  /*
-require 'C:\PHPMailer\src\Exception.php';
-require 'C:\PHPMailer\src\PHPMailer.php';
-require 'C:\PHPMailer\src\SMTP.php';
-*/
 
-  /* Create a new PHPMailer object. Passing TRUE to the constructor enables exceptions. */
-  $mail = new PHPMailer(TRUE);
+  // MESSAGE
+  $customerMsgHTML = "<h1>" . $submit . "</h1> </br>" . $deliveryTime . "</br>" . $totalMessage;
+  $customerMsgTEXT = $submit . "</br>" . $deliveryTime . "</br>" . $totalMessage;
 
-  /* Open the try/catch block. */
+  // SEND MAIL
+  $mail = new PHPMailer(true);
+
   try {
-    /* Set the mail sender. */
-    $mail->setFrom('lisa_baetsle@hotmail.com', 'Lisa Baetsle');
+    // DEBUG
+    // $mail->SMTPDebug = 3;
 
-    /* Add a recipient. */
-    $mail->addAddress('lisa_baetsle@hotmail.com', 'Lisa Baetsle');
+    // SERVER SETTINGS
+    $mail->isSMTP();
+    $mail->Host       = 'mail.gmx.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'lisa.baetsle@gmx.com';
+    $mail->Password   = 'Becode2020';
+    $mail->SMTPSecure = 'ssl'; //ssl -> 465  |  (gmail) tsl -> 587  |  (hotmail) PHPMailer::ENCRYPTION_STARTTLS -> 587
+    $mail->Port       =  465;
 
-    /* Set the subject. */
-    $mail->Subject = "Your order with 'the Personal Ham Processors'";
+    // SENDER
+    $mail->setFrom('lisa.baetsle@gmx.com', 'Lisa Baetsle');
 
-    /* Set the mail message body. */
-    $mail->Body = 'Yay. It worked!';
+    // RECEIVER(S)
+    $mail->addAddress('lisa_baetsle@hotmail.com', 'Happy Customer');
+    //$mail->addAddress($customer2, 'Happy Customer2');
 
-    /* Finally send the mail. */
+    // CONTENT
+    $mail->isHTML(true);
+    $mail->Subject = 'Your order with "the Personal Ham Processors"
+    ';
+    $mail->Body    = $customerMsgHTML; // Can be HTML
+    $mail->AltBody = $customerMsgTEXT; // Should be plain text
+
+    // SEND
     $mail->send();
-    echo 'Message has been sent';
+
+    // INFORM USER
+    echo "Email sent!";
   } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    echo "Error: {$mail->ErrorInfo}";
   }
