@@ -1,0 +1,14 @@
+{
+    "name": "lisa/php-order-form",
+    "description": "php order form",
+    "type": "project",
+    "license": "MIT",
+    "authors": [{
+        "name": "Lisa Baetsle",
+        "email": "lisa_baetsle@hotmail.com"
+    }],
+    "minimum-stability": "stable",
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    }
+}

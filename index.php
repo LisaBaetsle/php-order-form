@@ -8,10 +8,15 @@ session_start();
 // define variables and set to empty values
 $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = $productsErr = "";
 $email = $street = $streetnumber = $city = $zipcode = $products = "";
-$isFormValid = true;
+$isFormValid;
+$submit = "";
+$deliveryTime = "";
+$totalMessage = "";
+$total = 0;
 
 // Validate and check requirements form
 if (!empty($_POST)) {
+
   //email
   if (empty($_POST["email"])) {
     $emailErr = "Email is required";
@@ -71,7 +76,18 @@ if (!empty($_POST)) {
     $productsErr = "Pick at least one product";
     $isFormValid = false;
   } else {
-    $products = test_input($_POST["products"]);
+    $products = $_POST["products"];
+  }
+
+  // The form is valid
+  if ($isFormValid = true) {
+    createSessionValues();
+
+    $submit = 'Thank you! Your order is submitted. </br>';
+
+    $deliveryTime = estimateDeliveryTime();
+    $total = totalAmountPerOrder();
+    $totalMessage = 'The total amount of this order is €' . totalAmountPerOrder() . "</br>";
   }
 };
 
@@ -93,30 +109,15 @@ if (isset($_SESSION["zipcode"])) {
   $zipcode = $_SESSION["zipcode"];
 };
 
-// The form is valid
-$submit = "";
-$deliveryTime = "";
-$totalMessage = "";
-$total = 0;
-
-if ($isFormValid) {
-  createSessionValues();
-
-  $submit = 'Thank you! Your order is submitted. </br>';
-
-  $deliveryTime = estimateDeliveryTime();
-  $total = totalAmountPerOrder();
-  $totalMessage = 'The total amount of this order is €' . totalAmountPerOrder() . "</br>";
-};
 
 // Create the session values
 function createSessionValues()
 {
   $_SESSION["email"] = $_POST["email"];
-  $_SESSION["street"] = $_POST["street"];
-  $_SESSION["streetnumber"] = $_POST["streetnumber"];
-  $_SESSION["city"] = $_POST["city"];
-  $_SESSION["zipcode"] = $_POST["zipcode"];
+  $_SESSION["street"] = test_input($_POST["street"]);
+  $_SESSION["streetnumber"] = test_input($_POST["streetnumber"]);
+  $_SESSION["city"] = test_input($_POST["city"]);
+  $_SESSION["zipcode"] = test_input($_POST["zipcode"]);
 };
 
 //your products with their price.
@@ -200,6 +201,13 @@ function test_input($data)
   return $data;
 }
 
+/* // Send an email
+$to = $email;
+$subject = "Your order with 'the Personal Ham Processors'";
+$txt = $submit . "</br>" . $deliveryTime . "</br>" . $totalMessage . "</br>";
+
+mail($to, $subject, $txt); */
+
 // Debug function what is happening
 function whatIsHappening()
 {
@@ -216,3 +224,4 @@ function whatIsHappening()
 // whatIsHappening();
 
 require 'form-view.php';
+require 'mail.php';
