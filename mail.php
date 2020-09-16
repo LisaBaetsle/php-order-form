@@ -33,7 +33,7 @@
     $mail->setFrom('lisa.baetsle@gmx.com', 'Lisa Baetsle');
 
     // RECEIVER(S)
-    $mail->addAddress('lisa_baetsle@hotmail.com', 'Happy Customer');
+    $mail->addAddress($email, 'Happy Customer');
     //$mail->addAddress($customer2, 'Happy Customer2');
 
     // CONTENT
